@@ -4,40 +4,42 @@ import https from 'https';
 import fs from 'fs';
 import cors from 'cors';
 
+// Load environment variables first
 dotenv.config();
 
+// Routes
 import authRoutes from './routes/auth';
 import apiRoutes from './routes/messages';
 import scheduleRoutes from './routes/schedule';
 import channelsRoutes from './routes/channels';
-import testRoutes from './routes/test';
+import testRoutes from './routes/test'; // ✅ Import the new refresh-test route
+
+// Scheduler
 import scheduler from './utils/scheduler';
 
+// Create Express app
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: [process.env.FRONTEND_URL || 'https://localhost:4200']
+  origin: ['http://localhost:4200', 'https://localhost:4200']
 }));
-
+// app.use(cors({ origin: ['http://localhost:4200','https://localhost:4200'] }));
+// API Routes
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 app.use('/api', channelsRoutes);
-app.use('/api', testRoutes);
+app.use('/api', testRoutes); // ✅ Mount the refresh-test route
 app.use('/api/schedule', scheduleRoutes);
 
+// Start scheduler AFTER routes are registered
 scheduler.start();
 
-const PORT = Number(process.env.PORT) || 4000;
-const useLocalHttps = process.env.LOCAL_HTTPS === 'true';
+// SSL certificates
+const key = fs.readFileSync('./certs/key.pem');
+const cert = fs.readFileSync('./certs/cert.pem');
 
-if (useLocalHttps) {
-  const key = fs.readFileSync('./certs/key.pem');
-  const cert = fs.readFileSync('./certs/cert.pem');
-  https.createServer({ key, cert }, app).listen(PORT, () => {
-    console.log(`✅ Backend (HTTPS) on https://localhost:${PORT}`);
-  });
-} else {
-  app.listen(PORT, () => {
-    console.log(`✅ Backend (HTTP) on port ${PORT}`);
-  });
-}
+// Start HTTPS server
+https.createServer({ key, cert }, app).listen(4000, () => {
+  console.log('✅ Backend running on https://localhost:4000');
+  console.log('⏳ Scheduler started — checking every minute for due messages...');
+});

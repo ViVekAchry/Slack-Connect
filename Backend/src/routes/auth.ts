@@ -1,16 +1,13 @@
-// Backend/src/routes/auth.ts
-import { Router, Request, Response } from 'express';
+
+import { Router } from 'express';
 import axios from 'axios';
 import { initDB } from '../utils/db';
 
 const router = Router();
 
-/**
- * Start Slack OAuth
- */
-router.get('/slack', (_req: Request, res: Response) => {
+router.get('/slack', (_req, res) => {
   const clientId = process.env.SLACK_CLIENT_ID!;
-  const redirectUri = encodeURIComponent(process.env.SLACK_REDIRECT_URI!);
+  const redirectUri = encodeURIComponent('https://localhost:4000/auth/slack/callback');
   const scope = encodeURIComponent('chat:write,channels:read,groups:read,im:read,mpim:read');
 
   res.redirect(
@@ -18,10 +15,7 @@ router.get('/slack', (_req: Request, res: Response) => {
   );
 });
 
-/**
- * OAuth callback: exchange code, save tokens
- */
-router.get('/slack/callback', async (req: Request, res: Response) => {
+router.get('/slack/callback', async (req, res) => {
   const { code } = req.query as { code?: string };
   if (!code) return res.status(400).send('Missing code');
 
@@ -30,7 +24,7 @@ router.get('/slack/callback', async (req: Request, res: Response) => {
       client_id: process.env.SLACK_CLIENT_ID!,
       client_secret: process.env.SLACK_CLIENT_SECRET!,
       code,
-      redirect_uri: process.env.SLACK_REDIRECT_URI!,
+      redirect_uri: 'https://localhost:4000/auth/slack/callback',
     });
 
     const tokenResp = await axios.post('https://slack.com/api/oauth.v2.access', params, {
