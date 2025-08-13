@@ -1,0 +1,243 @@
+/* ===== Theme */
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --ring: rgba(16, 185, 129, 0.15);
+  --shadow: 0 8px 20px rgba(0,0,0,0.08);
+  --shadow-hover: 0 12px 28px rgba(0,0,0,0.12);
+  --brand: #2563eb;
+  --success: #16a34a;
+  --pending: #f59e0b;
+  --danger: #dc2626;
+}
+
+/* Page background + centering */
+.scheduled-wrapper {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+body, .app-root, .page-background {
+  /* Updated: more visible, modern gradient */
+  background: linear-gradient(135deg, #f0f4ff, #eaf6f6);
+}
+
+/* Header */
+.header {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.header h2 {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+  background: #dfe3ea;
+}
+
+
+/* List + cards */
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.message-card {
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid #e5e7eb;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .2s ease;
+  overflow: hidden;
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: #dbe2ef;
+}
+
+/* Card sections */
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #fafbff;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.title .icon {
+  font-size: 20px;
+}
+
+.meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #d1d5db;
+  background: #f3f4f6;
+  color: #374151;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge-id {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #3730a3;
+}
+
+/* Body grid for labels/values */
+.card-body {
+  padding: 16px 18px 6px;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  column-gap: 18px;
+  row-gap: 10px;
+}
+
+.kv {
+  display: contents; /* keep grid alignment */
+}
+
+.k {
+  color: var(--muted);
+  font-weight: 600;
+  text-align: right;
+  padding-top: 6px;
+}
+
+.v {
+  color: var(--text);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+/* Multi-line clamp for long messages */
+.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* show 3 lines then ellipsis */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Dates look tidy */
+.datetime {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2px;
+}
+
+/* Status pill */
+.status-pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.status-pill.success {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--success);
+  border-color: rgba(22, 163, 74, 0.25);
+}
+
+.status-pill.pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--pending);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+/* Actions */
+.card-actions {
+  padding: 12px 18px 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  border: 1px solid transparent;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+  user-select: none;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: var(--danger);
+  border-color: #fecaca;
+}
+
+.btn-danger:hover {
+  background: #ffdada;
+  border-color: #fca5a5;
+}
+
+.btn[disabled] {
+  cursor: not-allowed;
+  opacity: .55;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Row hover cue (subtle bg) */
+.message-card:hover .card-body {
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #fafbff 100%);
+}

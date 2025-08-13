@@ -1,0 +1,13 @@
+<div *ngIf="!connected" class="connect-container">
+  <div class="connect-card">
+    <header>
+      <h1>Slack Connect</h1>
+      <p class="subtitle">Connect your Slack workspace to send and schedule messages easily.</p>
+    </header>
+    <button class="connect-btn" (click)="connectSlack()">🔗 Connect to Slack</button>
+  </div>
+</div>
+
+<div *ngIf="connected" class="main-container">
+  <router-outlet></router-outlet>
+</div>

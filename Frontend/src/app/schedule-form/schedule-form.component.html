@@ -1,0 +1,69 @@
+<!-- Toast alerts (fixed top) -->
+<div class="toast-container" *ngIf="errorMsg || successMsg">
+  <div *ngIf="errorMsg" class="toast toast-error" role="alert">
+    {{ errorMsg }}
+  </div>
+  <div *ngIf="successMsg" class="toast toast-success" role="alert">
+    {{ successMsg }}
+  </div>
+</div>
+
+<div class="page-wrapper">
+  <div *ngIf="loadingChannels">Loading channels...</div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loadingChannels">
+    <h2 class="form-title">Schedule a Message</h2>
+
+    <!-- channel -->
+    <div style="margin-bottom: 10px;">
+      <label>Channel</label><br />
+      <select formControlName="channel">
+        <option value="" disabled>Select a channel</option>
+        <option *ngFor="let c of channels" [value]="c.id">
+          #{{ c.name }} {{ c.is_member ? '' : '(join first)' }}
+        </option>
+      </select>
+      <div *ngIf="form.get('channel')?.touched && form.get('channel')?.invalid" class="field-error">
+        Channel is required
+      </div>
+    </div>
+
+    <!-- message -->
+    <div style="margin-bottom: 10px;">
+      <label>Message</label><br />
+      <textarea formControlName="text" rows="4" cols="50" placeholder="Type your message"></textarea>
+      <div *ngIf="form.get('text')?.touched && form.get('text')?.invalid" class="field-error">
+        Message is required (max 4000 chars)
+      </div>
+    </div>
+
+    <!-- date time -->
+    <div style="margin-bottom: 10px;">
+      <label>Send At (your local time)</label><br />
+      <input type="datetime-local" formControlName="send_at" />
+      <div *ngIf="form.get('send_at')?.touched && form.get('send_at')?.invalid" class="field-error">
+        Send time is required
+      </div>
+    </div>
+
+    <!-- buttons -->
+    <div style="margin-top: 15px;">
+      <button type="submit" [disabled]="submitting || form.invalid">
+        {{ submitting ? 'Scheduling…' : 'Schedule' }}
+      </button>
+
+      <button
+        type="button"
+        (click)="sendNow()"
+        [disabled]="submitting || !form.get('channel')?.value || !form.get('text')?.value"
+        style="margin-left: 10px;"
+      >
+        {{ submitting ? 'Sending…' : 'Send Now' }}
+      </button>
+
+      <button type="button" style="margin-left: 10px;" (click)="goToScheduled()">
+        View Scheduled Messages →
+      </button>
+    </div>
+  </form>
+</div>

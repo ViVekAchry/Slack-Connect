@@ -1,0 +1,72 @@
+<div class="scheduled-wrapper">
+  <!-- Header with back button -->
+  <div class="header">
+    <h2>📅 Scheduled Messages</h2>
+    <button class="back-btn" (click)="goBack()">← Back to Schedule</button>
+  </div>
+
+  <!-- Loading / error states -->
+  <div *ngIf="loading" class="loading">Loading messages...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Scheduled messages list -->
+  <div *ngIf="!loading && scheduledMessages.length > 0" class="message-list">
+    <div class="message-card" *ngFor="let msg of scheduledMessages">
+      <div class="card-head">
+        <div class="title">
+          <span class="icon">💬</span>
+          <span>Scheduled Message</span>
+        </div>
+        <div class="meta">
+          <span class="badge badge-id">#{{ msg.channel }}</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="kv">
+          <div class="k">Channel</div>
+          <div class="v">#{{ msg.channel }}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Message</div>
+          <div class="v clamp">{{ msg.text }}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Send At</div>
+          <div class="v datetime">{{ msg.send_at }}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Created At</div>
+          <div class="v datetime">{{ msg.created_at }}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Status</div>
+          <div class="v">
+            <span
+              class="status-pill"
+              [class.success]="msg.sent === 1"
+              [class.pending]="msg.sent === 0"
+            >
+              {{ msg.sent === 1 ? 'Sent' : 'Scheduled' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button
+          class="btn btn-danger"
+          (click)="cancelMessage(msg.id)"
+          [disabled]="msg.sent === 1"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No messages state -->
+  <div *ngIf="!loading && scheduledMessages.length === 0" class="no-messages">
+    No scheduled messages.
+  </div>
+</div>
